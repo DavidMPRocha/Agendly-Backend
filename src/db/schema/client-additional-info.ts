@@ -3,7 +3,7 @@ import { client } from './client.ts';
 
 export const clientAdditionalInfo = pgTable('client_additional_Info', {
   id: uuid('id').primaryKey().defaultRandom(),
-  clientId: uuid('client_id').notNull().references(() => client.id),
+  client_id: uuid('client_id').notNull().references(() => client.id),
   type: varchar('type', { length: 100 }).notNull(),
   content: text('content').notNull(),
 });

@@ -1,16 +1,20 @@
 import { fastify } from "fastify"
-import { serializerCompiler, validatorCompiler, type ZodTypeProvider } from "fastify-type-provider-zod"
 import { fastifyCors } from "@fastify/cors"
 import { env } from "./env.ts"
+import { authRoutes } from "./http/routes/auth-routes.ts"
+import { userRoutes } from "./http/routes/user-routes.ts"
 
-const app = fastify().withTypeProvider<ZodTypeProvider>();
+const app = fastify();
 
 app.register(fastifyCors, {
-  origin: "http://localhost:3000"
+  origin: "*"
 });
 
-app.setSerializerCompiler(serializerCompiler);
-app.setValidatorCompiler(validatorCompiler);
+// Open routes
+app.register(authRoutes);
+
+// Protected routes
+app.register(userRoutes);
 
 app.get("/health", (req, res) => {
   res.send("OK");

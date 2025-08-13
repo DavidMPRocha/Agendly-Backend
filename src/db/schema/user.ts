@@ -5,8 +5,8 @@ import { company } from './company.ts';
 export const user = pgTable('user', {
   id: uuid('id').primaryKey().defaultRandom(),
   company_id: uuid('company_id').references(() => company.id),
-  firstName: varchar('first_name', { length: 50 }).notNull(),
-  lastName: varchar('last_name', { length: 50 }).notNull(),
+  first_name: varchar('first_name', { length: 50 }).notNull(),
+  last_name: varchar('last_name', { length: 50 }).notNull(),
   email: varchar('email', { length: 50 }).notNull(),
   password: varchar('password', { length: 128 }).notNull(),
   photo: varchar('photo', { length: 255 }).notNull(),

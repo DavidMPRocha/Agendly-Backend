@@ -4,8 +4,8 @@ import { location } from './location.ts';
 
 export const userLocation = pgTable('user_location', {
   id: uuid('id').primaryKey().defaultRandom(),
-  userId: uuid('user_id').notNull().references(() => user.id),
-  locationId: uuid('location_id').notNull().references(() => location.id),
+  user_id: uuid('user_id').notNull().references(() => user.id),
+  location_id: uuid('location_id').notNull().references(() => location.id),
 });
 
 export type UserLocation = typeof userLocation.$inferSelect;

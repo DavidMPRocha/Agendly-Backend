@@ -7,7 +7,7 @@ import { seedRole } from './role.ts';
 import { seedRolePermissions } from './role-permissions.ts';
 import { seedUserLocationRole } from './user-location-role.ts';
 import { seedServices } from './services.ts';
-import { seedAppointmentStatuses } from './appointment-statuses.ts';
+import { seedAppointmentStatus } from './appointment-status.ts';
 import { seedClient } from './client.ts';
 
 export async function runSeeds() {
@@ -40,7 +40,7 @@ export async function runSeeds() {
     await seedServices(companyId, locationId);
     
     // Seed appointment statuses
-    await seedAppointmentStatuses();
+    await seedAppointmentStatus();
     
     // Seed client
     await seedClient(companyId, locationId);

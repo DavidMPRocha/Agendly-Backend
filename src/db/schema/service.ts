@@ -4,10 +4,10 @@ import { location } from './location.ts';
 
 export const service = pgTable('service', {
   id: uuid('id').primaryKey().defaultRandom(),
-  companyId: uuid('company_id').notNull().references(() => company.id),
-  locationId: uuid('location_id').references(() => location.id),
+  company_id: uuid('company_id').notNull().references(() => company.id),
+  location_id: uuid('location_id').references(() => location.id),
   name: varchar('name', { length: 100 }).notNull(),
-  durationMinutes: integer('duration_minutes').notNull(),
+  duration_minutes: integer('duration_minutes').notNull(),
   price: decimal('price', { precision: 10, scale: 2 }).notNull(),
   description: text('description'),
 });

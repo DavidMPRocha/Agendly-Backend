@@ -1,8 +1,16 @@
-import { z } from "zod";
+// Validação simples de variáveis de ambiente
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3333;
+const DATABASE_URL = process.env.DATABASE_URL;
 
-const envSchema = z.object({
-  PORT: z.coerce.number().default(3333),
-  DATABASE_URL: z.string().url().startsWith("postgresql://"),
-});
+if (!DATABASE_URL) {
+  throw new Error('DATABASE_URL is required');
+}
 
-export const env = envSchema.parse(process.env);
+if (!DATABASE_URL.startsWith('postgresql://')) {
+  throw new Error('DATABASE_URL must start with postgresql://');
+}
+
+export const env = {
+  PORT,
+  DATABASE_URL
+};

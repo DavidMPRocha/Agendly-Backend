@@ -1,6 +1,6 @@
 import { client } from '../connection.ts';
 
-export async function seedAppointmentStatuses() {
+export async function seedAppointmentStatus() {
   try {
     console.log('📅 Starting appointment statuses seeding...');
     

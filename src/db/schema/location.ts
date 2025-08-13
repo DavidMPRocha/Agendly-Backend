@@ -3,11 +3,11 @@ import { company } from './company.ts';
 
 export const location = pgTable('location', {
   id: uuid('id').primaryKey().defaultRandom(),
-  companyId: uuid('company_id').notNull().references(() => company.id),
+  company_id: uuid('company_id').notNull().references(() => company.id),
   name: varchar('name', { length: 100 }).notNull(),
   address: varchar('address', { length: 255 }),
   city: varchar('city', { length: 50 }),
-  postalCode: varchar('postal_code', { length: 10 }),
+  postal_code: varchar('postal_code', { length: 10 }),
 });
 
 export type Location = typeof location.$inferSelect;
