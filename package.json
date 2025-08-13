@@ -1,0 +1,35 @@
+{
+  "name": "agendly-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file=.env --experimental-strip-types --watch --no-warnings src/server.ts",
+    "start": "node --env-file=.env --experimental-strip-types --no-warnings src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidMPRocha/Agendly-Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DavidMPRocha/Agendly-Backend/issues"
+  },
+  "homepage": "https://github.com/DavidMPRocha/Agendly-Backend#readme",
+  "devDependencies": {
+    "@types/node": "^24.2.1",
+    "drizzle-kit": "^0.31.4",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.1.0",
+    "drizzle-orm": "^0.44.4",
+    "fastify": "^5.5.0",
+    "fastify-type-provider-zod": "^5.0.3",
+    "postgres": "^3.4.7",
+    "zod": "^4.0.17"
+  }
+}
