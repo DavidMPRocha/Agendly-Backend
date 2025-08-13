@@ -1,22 +1,23 @@
 // User related schemas
-export * from './user.js';
-export * from './user-location.js';
-export * from './user-location-role.js';
+export * from './user.ts';
+export * from './user-location.ts';
+export * from './user-location-role.ts';
 
 // Company and location schemas
-export * from './company.js';
-export * from './location.js';
+export * from './company.ts';
+export * from './location.ts';
 
 // Client related schemas
-export * from './client.js';
-export * from './client-additional-info.js';
-export * from './client-additional-info-document.js';
+export * from './client.ts';
+export * from './client-additional-info.ts';
+export * from './client-additional-info-document.ts';
 
 // Service and appointment schemas
-export * from './service.js';
-export * from './appointment.js';
+export * from './service.ts';
+export * from './appointment.ts';
+export * from './appointment-status.ts';
 
 // Role and permission schemas
-export * from './role.js';
-export * from './permission.js';
-export * from './role-permission.js';
+export * from './role.ts';
+export * from './permission.ts';
+export * from './role-permission.ts';

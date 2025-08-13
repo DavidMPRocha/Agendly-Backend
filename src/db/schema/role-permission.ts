@@ -1,6 +1,6 @@
 import { pgTable, uuid } from 'drizzle-orm/pg-core';
-import { role } from './role.js';
-import { permission } from './permission.js';
+import { role } from './role.ts';
+import { permission } from './permission.ts';
 
 export const rolePermission = pgTable('role_permission', {
   id: uuid('id').primaryKey().defaultRandom(),

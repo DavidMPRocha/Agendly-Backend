@@ -1,7 +1,7 @@
 import { pgTable, uuid } from 'drizzle-orm/pg-core';
-import { user } from './user.js';
-import { location } from './location.js';
-import { role } from './role.js';
+import { user } from './user.ts';
+import { location } from './location.ts';
+import { role } from './role.ts';
 
 export const userLocationRole = pgTable('user_location_role', {
   id: uuid('id').primaryKey().defaultRandom(),

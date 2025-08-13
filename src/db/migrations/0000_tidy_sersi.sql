@@ -4,12 +4,19 @@ CREATE TABLE "appointment" (
 	"location_id" uuid NOT NULL,
 	"client_id" uuid NOT NULL,
 	"service_id" uuid NOT NULL,
+	"status_id" uuid,
 	"date" date NOT NULL,
 	"datetime_start" timestamp NOT NULL,
 	"datetime_end" timestamp NOT NULL,
 	"description" text,
 	"notified_by_phone" boolean DEFAULT false NOT NULL,
 	"notified_by_email" boolean DEFAULT false NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "appointment_status" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"name" varchar(20) NOT NULL,
+	"description" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE "client" (
@@ -57,11 +64,13 @@ CREATE TABLE "location" (
 CREATE TABLE "permission" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(255) NOT NULL,
-	"category" varchar(50) NOT NULL
+	"category" varchar(50) NOT NULL,
+	"description" varchar(500)
 );
 --> statement-breakpoint
 CREATE TABLE "role" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"company_id" uuid,
 	"name" varchar(100) NOT NULL,
 	"description" varchar(255)
 );
@@ -84,6 +93,7 @@ CREATE TABLE "service" (
 --> statement-breakpoint
 CREATE TABLE "user" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"company_id" uuid,
 	"first_name" varchar(50) NOT NULL,
 	"last_name" varchar(50) NOT NULL,
 	"email" varchar(50) NOT NULL,
@@ -109,15 +119,18 @@ ALTER TABLE "appointment" ADD CONSTRAINT "appointment_user_id_user_id_fk" FOREIG
 ALTER TABLE "appointment" ADD CONSTRAINT "appointment_location_id_location_id_fk" FOREIGN KEY ("location_id") REFERENCES "public"."location"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "appointment" ADD CONSTRAINT "appointment_client_id_client_id_fk" FOREIGN KEY ("client_id") REFERENCES "public"."client"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "appointment" ADD CONSTRAINT "appointment_service_id_service_id_fk" FOREIGN KEY ("service_id") REFERENCES "public"."service"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "appointment" ADD CONSTRAINT "appointment_status_id_appointment_status_id_fk" FOREIGN KEY ("status_id") REFERENCES "public"."appointment_status"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "client" ADD CONSTRAINT "client_company_id_company_id_fk" FOREIGN KEY ("company_id") REFERENCES "public"."company"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "client" ADD CONSTRAINT "client_location_id_location_id_fk" FOREIGN KEY ("location_id") REFERENCES "public"."location"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "client_additional_Info" ADD CONSTRAINT "client_additional_Info_client_id_client_id_fk" FOREIGN KEY ("client_id") REFERENCES "public"."client"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "client_additional_info_document" ADD CONSTRAINT "client_additional_info_document_client_additional_info_id_client_additional_Info_id_fk" FOREIGN KEY ("client_additional_info_id") REFERENCES "public"."client_additional_Info"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "location" ADD CONSTRAINT "location_company_id_company_id_fk" FOREIGN KEY ("company_id") REFERENCES "public"."company"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "role" ADD CONSTRAINT "role_company_id_company_id_fk" FOREIGN KEY ("company_id") REFERENCES "public"."company"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "role_permission" ADD CONSTRAINT "role_permission_role_id_role_id_fk" FOREIGN KEY ("role_id") REFERENCES "public"."role"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "role_permission" ADD CONSTRAINT "role_permission_permission_id_permission_id_fk" FOREIGN KEY ("permission_id") REFERENCES "public"."permission"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "service" ADD CONSTRAINT "service_company_id_company_id_fk" FOREIGN KEY ("company_id") REFERENCES "public"."company"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "service" ADD CONSTRAINT "service_location_id_location_id_fk" FOREIGN KEY ("location_id") REFERENCES "public"."location"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "user" ADD CONSTRAINT "user_company_id_company_id_fk" FOREIGN KEY ("company_id") REFERENCES "public"."company"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "user_location" ADD CONSTRAINT "user_location_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "user_location" ADD CONSTRAINT "user_location_location_id_location_id_fk" FOREIGN KEY ("location_id") REFERENCES "public"."location"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "user_location_role" ADD CONSTRAINT "user_location_role_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint

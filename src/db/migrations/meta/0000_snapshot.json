@@ -1,5 +1,5 @@
 {
-  "id": "40c5cf8b-981c-4ebf-a923-0f93e9c5b7da",
+  "id": "9ee3fd2e-9836-4416-9254-47fe8ae5942b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -38,6 +38,12 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
+        },
+        "status_id": {
+          "name": "status_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
         },
         "date": {
           "name": "date",
@@ -131,8 +137,53 @@
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
+        },
+        "appointment_status_id_appointment_status_id_fk": {
+          "name": "appointment_status_id_appointment_status_id_fk",
+          "tableFrom": "appointment",
+          "tableTo": "appointment_status",
+          "columnsFrom": [
+            "status_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.appointment_status": {
+      "name": "appointment_status",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -464,6 +515,12 @@
           "type": "varchar(50)",
           "primaryKey": false,
           "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -485,6 +542,12 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "name": {
           "name": "name",
           "type": "varchar(100)",
@@ -499,7 +562,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "role_company_id_company_id_fk": {
+          "name": "role_company_id_company_id_fk",
+          "tableFrom": "role",
+          "tableTo": "company",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -659,6 +736,12 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+        "company_id": {
+          "name": "company_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "first_name": {
           "name": "first_name",
           "type": "varchar(50)",
@@ -698,7 +781,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "user_company_id_company_id_fk": {
+          "name": "user_company_id_company_id_fk",
+          "tableFrom": "user",
+          "tableTo": "company",
+          "columnsFrom": [
+            "company_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},

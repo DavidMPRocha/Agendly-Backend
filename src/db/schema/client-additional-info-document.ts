@@ -1,5 +1,5 @@
 import { pgTable, uuid, varchar } from 'drizzle-orm/pg-core';
-import { clientAdditionalInfo } from './client-additional-info.js';
+import { clientAdditionalInfo } from './client-additional-info.ts';
 
 export const clientAdditionalInfoDocument = pgTable('client_additional_info_document', {
   id: uuid('id').primaryKey().defaultRandom(),
