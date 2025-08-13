@@ -8,6 +8,7 @@ interface JWTPayload {
   user_id: string;
   email: string;
   type: string;
+  company_id: string;
 }
 
 // Interface para estender o FastifyRequest com o user autenticado

@@ -3,6 +3,8 @@ import { fastifyCors } from "@fastify/cors"
 import { env } from "./env.ts"
 import { authRoutes } from "./http/routes/auth-routes.ts"
 import { userRoutes } from "./http/routes/user-routes.ts"
+import { clientRoutes } from "./http/routes/client-routes.ts"
+import { serviceRoutes } from "./http/routes/service-routes.ts"
 
 const app = fastify();
 
@@ -15,6 +17,8 @@ app.register(authRoutes);
 
 // Protected routes
 app.register(userRoutes);
+app.register(clientRoutes);
+app.register(serviceRoutes);
 
 app.get("/health", (req, res) => {
   res.send("OK");
