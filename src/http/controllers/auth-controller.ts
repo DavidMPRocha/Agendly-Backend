@@ -29,12 +29,22 @@ async function loginHandler(request: FastifyRequest, reply: FastifyReply) {
     });
   }
 
+  if (!userData.company_id) {
+    return reply.status(400).send({
+      error: 'Utilizador não possui empresa associada'
+    });
+  }
+
+  const company = await db.select().from(schema.company).where(eq(schema.company.id, userData.company_id));
   // Gerar token JWT
   const token = jwt.sign(
     { 
       user_id: userData.id, 
+      first_name: userData.first_name,
+      last_name: userData.last_name,
       email: userData.email,
       company_id: userData.company_id,
+      company_name: company[0].name,
       type: userData.type 
     },
     JWT_SECRET,
@@ -46,7 +56,7 @@ async function loginHandler(request: FastifyRequest, reply: FastifyReply) {
 
   return reply.status(200).send({
     message: 'Login realizado com sucesso',
-    user: userWithoutPassword,
+    user: { ...userWithoutPassword, company_name: company[0].name },
     token
   });
 }
@@ -54,7 +64,7 @@ async function loginHandler(request: FastifyRequest, reply: FastifyReply) {
 export const login = withErrorHandler(loginHandler, 'login');
 
 async function registerHandler(request: FastifyRequest, reply: FastifyReply) {
-  const { first_name, last_name, email, password } = request.body as RegisterBody;
+  const { first_name, last_name, email, password, company_name, phone, address, city, state, company_type, specialty, terms, newsletter } = request.body as RegisterBody;
 
   // Verificar se o user já existe
   const existingUser = await db.select().from(schema.user).where(eq(schema.user.email, email));
@@ -67,11 +77,11 @@ async function registerHandler(request: FastifyRequest, reply: FastifyReply) {
 
   // *** Criar compnay ***
   // Verificar se a compnay já existe com o nome DEFAULT
-  const company = await db.select().from(schema.company).where(eq(schema.company.name, `Empresa ${first_name} ${last_name}`));
-  const newCompanyName = company.length === 0 ? `Empresa ${first_name} ${last_name}` : `Empresa ${first_name} ${last_name} ${company.length + 1}`;
+  const company = await db.select().from(schema.company).where(eq(schema.company.name, company_name));
+  const newCompanyName = company.length === 0 ? company_name : `${company_name} ${company.length + 1}`;
   // Criar compnay
   const newCompany = await db.insert(schema.company).values({
-    name: `Empresa ${first_name} ${last_name}`,
+    name: newCompanyName
   }).returning();
   const company_id = newCompany[0].id;
 
@@ -105,7 +115,9 @@ async function registerHandler(request: FastifyRequest, reply: FastifyReply) {
     { 
       user_id: newUser[0].id, 
       email: newUser[0].email,
+      company_name: newCompanyName,
       company_id: newUser[0].company_id,
+      location_id: newLocation[0].id,
       type: newUser[0].type 
     },
     JWT_SECRET,
