@@ -30,7 +30,7 @@ app.get("/health", (req, res) => {
   res.send("OK");
 });
 
-app.listen({ port: env.PORT }, (err, address) => {
+app.listen({ port: env.PORT, host: "0.0.0.0" }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
