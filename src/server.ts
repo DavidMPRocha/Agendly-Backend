@@ -35,5 +35,5 @@ app.listen({ port: env.PORT, host: "0.0.0.0" }, (err, address) => {
     console.error(err);
     process.exit(1);
   }
-  console.log(`Server is running on port ${address.split("]:")[1]}`);
+  console.log(`Server is running on port ${address.split(":")[2]}`);
 });
