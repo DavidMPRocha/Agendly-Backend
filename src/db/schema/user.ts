@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, text } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, text, timestamp, boolean } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { company } from './company.ts';
 
@@ -11,6 +11,9 @@ export const user = pgTable('user', {
   password: varchar('password', { length: 128 }).notNull(),
   photo: varchar('photo', { length: 255 }).notNull(),
   type: varchar('type', { length: 20 }).notNull().default('owner'),
+  created_at: timestamp('created_at').notNull().defaultNow(),
+  updated_at: timestamp('updated_at').notNull().defaultNow().$onUpdate(() => new Date()),
+  is_active: boolean('is_active').notNull().default(true),
 });
 
 export const userRelations = relations(user, ({ one }) => ({

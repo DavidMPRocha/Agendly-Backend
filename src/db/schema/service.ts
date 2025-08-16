@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, integer, decimal, text } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, integer, decimal, text, timestamp, boolean } from 'drizzle-orm/pg-core';
 import { company } from './company.ts';
 import { location } from './location.ts';
 
@@ -10,6 +10,9 @@ export const service = pgTable('service', {
   duration_minutes: integer('duration_minutes').notNull(),
   price: decimal('price', { precision: 10, scale: 2 }).notNull(),
   description: text('description'),
+  created_at: timestamp('created_at').notNull().defaultNow(),
+  updated_at: timestamp('updated_at').notNull().defaultNow().$onUpdate(() => new Date()),
+  is_active: boolean('is_active').notNull().default(true),
 });
 
 export type Service = typeof service.$inferSelect;

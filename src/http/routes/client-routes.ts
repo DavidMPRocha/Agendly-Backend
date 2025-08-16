@@ -1,7 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 import { authenticateToken } from '../middleware/auth-middleware.ts';
-import { getClient, listClients, createClient, updateClient, deleteClient } from '../controllers/client-controller.ts';
-import { getClientSchema, listClientsSchema, createClientSchema, updateClientSchema, deleteClientSchema } from '../schemas/client-schemas.ts';
+import { getClient, listClients, createClient, updateClient, deleteClient, dashboardClient } from '../controllers/client-controller.ts';
+import { getClientSchema, listClientsSchema, createClientSchema, updateClientSchema, deleteClientSchema, dasboardClientSchema } from '../schemas/client-schemas.ts';
 
 export const clientRoutes: FastifyPluginCallback = (app) => {
   // Rota para obter um cliente específico
@@ -37,5 +37,11 @@ export const clientRoutes: FastifyPluginCallback = (app) => {
     schema: deleteClientSchema,
     preHandler: authenticateToken,
     handler: deleteClient
+  });
+
+  app.get('/clients/dashboard', {
+    schema: dasboardClientSchema,
+    preHandler: authenticateToken,
+    handler: dashboardClient
   });
 };

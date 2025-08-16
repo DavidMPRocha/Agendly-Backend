@@ -8,6 +8,20 @@
       "when": 1755110254596,
       "tag": "0000_large_harrier",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1755284044791,
+      "tag": "0001_magical_the_professor",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1755362241992,
+      "tag": "0002_silky_shocker",
+      "breakpoints": true
     }
   ]
 }
