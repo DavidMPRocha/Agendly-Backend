@@ -222,7 +222,6 @@ async function dashboardClientHandler(request: FastifyRequest, reply: FastifyRep
       sql`created_at >= NOW() - INTERVAL '30 days'`
     ));
   
-
   // Total de novos clientes no mês passado
   const total_clients_last_month = await db
     .select({ count: sql<number>`count(*)` })

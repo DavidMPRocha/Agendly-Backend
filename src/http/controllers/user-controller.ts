@@ -10,7 +10,7 @@ async function getCurrentUserHandler(request: FastifyRequest, reply: FastifyRepl
   
   if (users.length === 0) {
     return reply.status(404).send({
-      error: 'user não encontrado'
+      error: 'User não encontrado'
     });
   }
 
@@ -57,6 +57,26 @@ async function updateCurrentUserHandler(request: FastifyRequest, reply: FastifyR
   });
 }
 
+export const updateCurrentUser = withErrorHandler(updateCurrentUserHandler, 'atualizar user atual');
+
+// Controller para listar users (apenas para owners/admins)
+async function listUsersHandler(request: FastifyRequest, reply: FastifyReply) {
+  const { company_id } = request.query as { company_id: string };
+
+  const users = await db.select({
+    id: schema.user.id,
+    first_name: schema.user.first_name,
+    last_name: schema.user.last_name,
+    email: schema.user.email,
+    photo: schema.user.photo,
+    type: schema.user.type
+  }).from(schema.user)
+  .where(eq(schema.user.company_id, company_id));
+
+  return reply.send({
+    users
+  });
+}
 
 export const listUsers = withErrorHandler(listUsersHandler, 'listar users');
 
@@ -80,25 +100,3 @@ async function getUserByIdHandler(request: FastifyRequest, reply: FastifyReply) 
 }
 
 export const getUserById = withErrorHandler(getUserByIdHandler, 'obter user por id');
-
-
-export const updateCurrentUser = withErrorHandler(updateCurrentUserHandler, 'atualizar user atual');
-
-// Controller para listar users (apenas para owners/admins)
-async function listUsersHandler(request: FastifyRequest, reply: FastifyReply) {
-  const { company_id } = request.query as { company_id: string };
-
-  const users = await db.select({
-    id: schema.user.id,
-    first_name: schema.user.first_name,
-    last_name: schema.user.last_name,
-    email: schema.user.email,
-    photo: schema.user.photo,
-    type: schema.user.type
-  }).from(schema.user)
-  .where(eq(schema.user.company_id, company_id));
-
-  return reply.send({
-    users
-  });
-}
