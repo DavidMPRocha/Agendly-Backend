@@ -84,3 +84,33 @@ export const listUsersSchema = {
     }
   }
 };
+
+export const getUserByIdSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      id: { type: 'string', minLength: 36, maxLength: 36 }
+    },
+    additionalProperties: false,
+    required: ['id']
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        user: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            first_name: { type: 'string' },
+            last_name: { type: 'string' },
+            email: { type: 'string' },
+            photo: { type: 'string' },
+            type: { type: 'string' },
+            company_id: { type: 'string' }
+          }
+        }
+      }
+    }
+  }
+};

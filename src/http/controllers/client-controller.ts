@@ -213,6 +213,7 @@ async function dashboardClientHandler(request: FastifyRequest, reply: FastifyRep
       eq(schema.client.status, 1)
     ));
 
+  // Total de novos clientes nos últimos 30 dias
   const total_clients_new = await db
     .select({ count: sql<number>`count(*)` })
     .from(schema.client)
@@ -220,11 +221,23 @@ async function dashboardClientHandler(request: FastifyRequest, reply: FastifyRep
       eq(schema.client.company_id, company_id),
       sql`created_at >= NOW() - INTERVAL '30 days'`
     ));
+  
+
+  // Total de novos clientes no mês passado
+  const total_clients_last_month = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(schema.client)
+    .where(and(
+      eq(schema.client.company_id, company_id),
+      sql`created_at >= NOW() - INTERVAL '60 days' AND created_at < NOW() - INTERVAL '30 days'`
+    ));
 
   return reply.send({
     total_clients: total_clients[0]?.count || 0,
     total_clients_active: total_clients_active[0]?.count || 0,
+    total_clients_active_percentage: (((total_clients_active[0]?.count || 0) / (total_clients[0]?.count || 0)) * 100).toFixed(0),
     total_clients_new: total_clients_new[0]?.count || 0,
+    total_clients_diff_last_month_percentage: ((((total_clients_new[0]?.count || 0) - (total_clients_last_month[0]?.count || 0)) / (total_clients_new[0]?.count || 0)) * 100).toFixed(0),
     retention_rate: 0,
   });
 }

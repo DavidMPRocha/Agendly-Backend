@@ -1,7 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 import { authenticateToken, requireOwnerOrAdmin } from '../middleware/auth-middleware.ts';
 import { getCurrentUser, updateCurrentUser, listUsers } from '../controllers/user-controller.ts';
-import { getUserSchema, listUsersSchema, updateUserSchema } from '../schemas/user-schemas.ts';
+import { getUserByIdSchema, getUserSchema, listUsersSchema, updateUserSchema } from '../schemas/user-schemas.ts';
 
 export const userRoutes: FastifyPluginCallback = (app) => {
   // Rota para obter dados do user logado
@@ -18,10 +18,18 @@ export const userRoutes: FastifyPluginCallback = (app) => {
     handler: updateCurrentUser
   });
 
+  // Rota para obter dados de um user específico
+  app.get('/users/:id', {
+    schema: getUserByIdSchema,
+    preHandler: authenticateToken,
+    handler: getCurrentUser
+  });
+
   // Rota para listar todos os users (apenas para owners/admins)
   app.get('/users', {
     schema: listUsersSchema,
-    preHandler: [authenticateToken, requireOwnerOrAdmin],
+    preHandler: authenticateToken,
     handler: listUsers
   });
+
 };

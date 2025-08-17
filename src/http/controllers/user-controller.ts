@@ -57,6 +57,31 @@ async function updateCurrentUserHandler(request: FastifyRequest, reply: FastifyR
   });
 }
 
+
+export const listUsers = withErrorHandler(listUsersHandler, 'listar users');
+
+// Controller para obter dados de um user específico
+async function getUserByIdHandler(request: FastifyRequest, reply: FastifyReply) {
+  const { id } = request.params as { id: string };
+  const users = await db.select().from(schema.user).where(eq(schema.user.id, id));
+  
+  if (users.length === 0) {
+    return reply.status(404).send({
+      error: 'user não encontrado'
+    });
+  }
+
+  const userData = users[0];
+  const { password: _, ...userWithoutPassword } = userData;
+
+  return reply.send({
+    user: userWithoutPassword
+  });
+}
+
+export const getUserById = withErrorHandler(getUserByIdHandler, 'obter user por id');
+
+
 export const updateCurrentUser = withErrorHandler(updateCurrentUserHandler, 'atualizar user atual');
 
 // Controller para listar users (apenas para owners/admins)
@@ -77,5 +102,3 @@ async function listUsersHandler(request: FastifyRequest, reply: FastifyReply) {
     users
   });
 }
-
-export const listUsers = withErrorHandler(listUsersHandler, 'listar users');
