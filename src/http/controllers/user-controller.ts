@@ -10,7 +10,7 @@ async function getCurrentUserHandler(request: FastifyRequest, reply: FastifyRepl
   
   if (users.length === 0) {
     return reply.status(404).send({
-      error: 'User não encontrado'
+      error: 'User não foi encontrado'
     });
   }
 
@@ -22,7 +22,7 @@ async function getCurrentUserHandler(request: FastifyRequest, reply: FastifyRepl
   });
 }
 
-export const getCurrentUser = withErrorHandler(getCurrentUserHandler, 'buscar user atual');
+export const getCurrentUser = withErrorHandler(getCurrentUserHandler, 'procurar user atual');
 
 // Controller para atualizar dados do user
 async function updateCurrentUserHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -45,19 +45,19 @@ async function updateCurrentUserHandler(request: FastifyRequest, reply: FastifyR
 
   if (updatedUser.length === 0) {
     return reply.status(404).send({
-      error: 'user não encontrado'
+      error: 'user não foi encontrado'
     });
   }
 
   const { password: _, ...userWithoutPassword } = updatedUser[0];
 
   return reply.send({
-    message: 'user atualizado com sucesso',
+    message: 'user modificado com sucesso',
     user: userWithoutPassword
   });
 }
 
-export const updateCurrentUser = withErrorHandler(updateCurrentUserHandler, 'atualizar user atual');
+export const updateCurrentUser = withErrorHandler(updateCurrentUserHandler, 'modificar user atual');
 
 // Controller para listar users (apenas para owners/admins)
 async function listUsersHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -87,7 +87,7 @@ async function getUserByIdHandler(request: FastifyRequest, reply: FastifyReply) 
   
   if (users.length === 0) {
     return reply.status(404).send({
-      error: 'user não encontrado'
+      error: 'user não foi encontrado'
     });
   }
 

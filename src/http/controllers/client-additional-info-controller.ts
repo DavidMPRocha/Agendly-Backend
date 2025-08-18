@@ -12,7 +12,7 @@ async function getClientAdditionalInfoHandler(request: FastifyRequest, reply: Fa
   
   if (additionalInfo.length === 0) {
     return reply.status(404).send({
-      error: 'Informações adicionais não encontradas'
+      error: 'Informações adicionais não foram encontradas'
     });
   }
 
@@ -21,7 +21,7 @@ async function getClientAdditionalInfoHandler(request: FastifyRequest, reply: Fa
   });
 }
 
-export const getClientAdditionalInfo = withErrorHandler(getClientAdditionalInfoHandler, 'buscar informações adicionais do cliente');
+export const getClientAdditionalInfo = withErrorHandler(getClientAdditionalInfoHandler, 'procurar informações adicionais do cliente');
 
 // Controller para listar informações adicionais de um cliente
 async function listClientAdditionalInfoHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -51,12 +51,12 @@ async function createClientAdditionalInfoHandler(request: FastifyRequest, reply:
   }).returning();
 
   return reply.status(201).send({
-    message: 'Informações adicionais criadas com sucesso',
+    message: 'Informações adicionais adicionadas com sucesso',
     additionalInfo: newAdditionalInfo[0]
   });
 }
 
-export const createClientAdditionalInfo = withErrorHandler(createClientAdditionalInfoHandler, 'criar informações adicionais');
+export const createClientAdditionalInfo = withErrorHandler(createClientAdditionalInfoHandler, 'adicionar informações adicionais');
 
 // Controller para atualizar informações adicionais
 async function updateClientAdditionalInfoHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -78,17 +78,17 @@ async function updateClientAdditionalInfoHandler(request: FastifyRequest, reply:
 
   if (updatedAdditionalInfo.length === 0) {
     return reply.status(404).send({
-      error: 'Informações adicionais não encontradas'
+      error: 'Informações adicionais não foram encontradas'
     });
   }
 
   return reply.send({
-    message: 'Informações adicionais atualizadas com sucesso',
+    message: 'Informações adicionais modificadas com sucesso',
     additionalInfo: updatedAdditionalInfo[0]
   });
 }
 
-export const updateClientAdditionalInfo = withErrorHandler(updateClientAdditionalInfoHandler, 'atualizar informações adicionais');
+export const updateClientAdditionalInfo = withErrorHandler(updateClientAdditionalInfoHandler, 'modificar informações adicionais');
 
 // Controller para eliminar informações adicionais
 async function deleteClientAdditionalInfoHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -101,13 +101,13 @@ async function deleteClientAdditionalInfoHandler(request: FastifyRequest, reply:
 
   if (deletedAdditionalInfo.length === 0) {
     return reply.status(404).send({
-      error: 'Informações adicionais não encontradas'
+      error: 'Informações adicionais não foram encontradas'
     });
   }
 
   return reply.send({
-    message: 'Informações adicionais eliminadas com sucesso'
+    message: 'Informações adicionais removidas com sucesso'
   });
 }
 
-export const deleteClientAdditionalInfo = withErrorHandler(deleteClientAdditionalInfoHandler, 'eliminar informações adicionais');
+export const deleteClientAdditionalInfo = withErrorHandler(deleteClientAdditionalInfoHandler, 'remover informações adicionais');

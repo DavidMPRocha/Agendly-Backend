@@ -13,7 +13,7 @@ async function getClientHandler(request: FastifyRequest, reply: FastifyReply) {
   
   if (clients.length === 0) {
     return reply.status(404).send({
-      error: 'Cliente não encontrado'
+      error: 'Cliente não foi encontrado'
     });
   }
 
@@ -22,7 +22,7 @@ async function getClientHandler(request: FastifyRequest, reply: FastifyReply) {
   });
 }
 
-export const getClient = withErrorHandler(getClientHandler, 'buscar cliente');
+export const getClient = withErrorHandler(getClientHandler, 'procurar cliente');
 
 // Controller para listar clientes
 async function listClientsHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -95,12 +95,12 @@ async function createClientHandler(request: FastifyRequest, reply: FastifyReply)
   }).returning();
 
   return reply.status(201).send({
-    message: 'Cliente criado com sucesso',
+    message: 'Cliente adicionado com sucesso',
     client: newClient[0]
   });
 }
 
-export const createClient = withErrorHandler(createClientHandler, 'criar cliente');
+export const createClient = withErrorHandler(createClientHandler, 'adicionar cliente');
 
 // Controller para atualizar um cliente
 async function updateClientHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -160,17 +160,17 @@ async function updateClientHandler(request: FastifyRequest, reply: FastifyReply)
 
   if (updatedClient.length === 0) {
     return reply.status(404).send({
-      error: 'Cliente não encontrado'
+      error: 'Cliente não foi encontrado'
     });
   }
 
   return reply.send({
-    message: 'Cliente atualizado com sucesso',
+    message: 'Cliente modificado com sucesso',
     client: updatedClient[0]
   });
 }
 
-export const updateClient = withErrorHandler(updateClientHandler, 'atualizar cliente');
+export const updateClient = withErrorHandler(updateClientHandler, 'modificar cliente');
 
 // Controller para eliminar um cliente
 async function deleteClientHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -183,16 +183,16 @@ async function deleteClientHandler(request: FastifyRequest, reply: FastifyReply)
 
   if (deletedClient.length === 0) {
     return reply.status(404).send({
-      error: 'Cliente não encontrado'
+      error: 'Cliente não foi encontrado'
     });
   }
 
   return reply.send({
-    message: 'Cliente eliminado com sucesso'
+    message: 'Cliente removido com sucesso'
   });
 }
 
-export const deleteClient = withErrorHandler(deleteClientHandler, 'eliminar cliente');
+export const deleteClient = withErrorHandler(deleteClientHandler, 'remover cliente');
 
 // Controller para retornar dados do dashboard sobre os clientes
 async function dashboardClientHandler(request: FastifyRequest, reply: FastifyReply) {

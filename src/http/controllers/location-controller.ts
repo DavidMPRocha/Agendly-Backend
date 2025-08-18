@@ -12,7 +12,7 @@ async function getLocationHandler(request: FastifyRequest, reply: FastifyReply) 
   
   if (locations.length === 0) {
     return reply.status(404).send({
-      error: 'Localização não encontrada'
+      error: 'Localização não foi encontrada'
     });
   }
 
@@ -21,7 +21,7 @@ async function getLocationHandler(request: FastifyRequest, reply: FastifyReply) 
   });
 }
 
-export const getLocation = withErrorHandler(getLocationHandler, 'buscar localização');
+export const getLocation = withErrorHandler(getLocationHandler, 'procurar localização');
 
 // Controller para listar localizações
 async function listLocationsHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -55,12 +55,12 @@ async function createLocationHandler(request: FastifyRequest, reply: FastifyRepl
   }).returning();
 
   return reply.status(201).send({
-    message: 'Localização criada com sucesso',
+    message: 'Localização adicionada com sucesso',
     location: newLocation[0]
   });
 }
 
-export const createLocation = withErrorHandler(createLocationHandler, 'criar localização');
+export const createLocation = withErrorHandler(createLocationHandler, 'adicionar localização');
 
 // Controller para atualizar uma localização
 async function updateLocationHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -86,17 +86,17 @@ async function updateLocationHandler(request: FastifyRequest, reply: FastifyRepl
 
   if (updatedLocation.length === 0) {
     return reply.status(404).send({
-      error: 'Localização não encontrada'
+      error: 'Localização não foi encontrada'
     });
   }
 
   return reply.send({
-    message: 'Localização atualizada com sucesso',
+    message: 'Localização modificada com sucesso',
     location: updatedLocation[0]
   });
 }
 
-export const updateLocation = withErrorHandler(updateLocationHandler, 'atualizar localização');
+export const updateLocation = withErrorHandler(updateLocationHandler, 'modificar localização');
 
 // Controller para eliminar uma localização
 async function deleteLocationHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -109,13 +109,13 @@ async function deleteLocationHandler(request: FastifyRequest, reply: FastifyRepl
 
   if (deletedLocation.length === 0) {
     return reply.status(404).send({
-      error: 'Localização não encontrada'
+      error: 'Localização não foi encontrada'
     });
   }
 
   return reply.send({
-    message: 'Localização eliminada com sucesso'
+    message: 'Localização removida com sucesso'
   });
 }
 
-export const deleteLocation = withErrorHandler(deleteLocationHandler, 'eliminar localização');
+export const deleteLocation = withErrorHandler(deleteLocationHandler, 'remover localização');

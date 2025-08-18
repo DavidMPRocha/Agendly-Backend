@@ -12,12 +12,12 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 async function loginHandler(request: FastifyRequest, reply: FastifyReply) {
   const { email, password } = request.body as LoginBody;
 
-  // Buscar user pelo email
+  // Procurar user pelo email
   const users = await db.select().from(schema.user).where(eq(schema.user.email, email));
   
   if (users.length === 0) {
     return reply.status(401).send({
-      error: 'Email ou senha inválidos'
+      error: 'Email ou palavra-passe inválidos'
     });
   }
 
@@ -25,7 +25,7 @@ async function loginHandler(request: FastifyRequest, reply: FastifyReply) {
 
   if (password !== userData.password) {
     return reply.status(401).send({
-      error: 'Email ou senha inválidos'
+      error: 'Email ou palavra-passe inválidos'
     });
   }
 
@@ -51,11 +51,11 @@ async function loginHandler(request: FastifyRequest, reply: FastifyReply) {
     { expiresIn: '7d' }
   );
 
-  // Retornar resposta sem a senha
+  // Retornar resposta sem a palavra-passe
   const { password: _, ...userWithoutPassword } = userData;
 
   return reply.status(200).send({
-    message: 'Login realizado com sucesso',
+    message: 'Login efetuado com sucesso',
     user: { ...userWithoutPassword, company_name: company[0].name },
     token
   });
@@ -71,7 +71,7 @@ async function registerHandler(request: FastifyRequest, reply: FastifyReply) {
   
   if (existingUser.length > 0) {
     return reply.status(400).send({
-      error: 'Email já está em uso'
+      error: 'Email já se encontra em uso'
     });
   }
 
@@ -124,14 +124,14 @@ async function registerHandler(request: FastifyRequest, reply: FastifyReply) {
     { expiresIn: '7d' }
   );
 
-  // Retornar resposta sem a senha
+  // Retornar resposta sem a palavra-passe
   const { password: _, ...userWithoutPassword } = newUser[0];
 
   return reply.status(201).send({
-    message: 'User criado com sucesso',
+    message: 'User adicionado com sucesso',
     user: userWithoutPassword,
     token
   });
 }
 
-export const register = withErrorHandler(registerHandler, 'registro');
+export const register = withErrorHandler(registerHandler, 'registo');

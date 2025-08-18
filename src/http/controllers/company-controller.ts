@@ -12,7 +12,7 @@ async function getCompanyHandler(request: FastifyRequest, reply: FastifyReply) {
   
   if (companies.length === 0) {
     return reply.status(404).send({
-      error: 'Empresa não encontrada'
+      error: 'Empresa não foi encontrada'
     });
   }
 
@@ -21,7 +21,7 @@ async function getCompanyHandler(request: FastifyRequest, reply: FastifyReply) {
   });
 }
 
-export const getCompany = withErrorHandler(getCompanyHandler, 'buscar empresa');
+export const getCompany = withErrorHandler(getCompanyHandler, 'procurar empresa');
 
 // Controller para atualizar uma empresa
 async function updateCompanyHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -43,14 +43,14 @@ async function updateCompanyHandler(request: FastifyRequest, reply: FastifyReply
 
   if (updatedCompany.length === 0) {
     return reply.status(404).send({
-      error: 'Empresa não encontrada'
+      error: 'Empresa não foi encontrada'
     });
   }
 
   return reply.send({
-    message: 'Empresa atualizada com sucesso',
+    message: 'Empresa modificada com sucesso',
     company: updatedCompany[0]
   });
 }
 
-export const updateCompany = withErrorHandler(updateCompanyHandler, 'atualizar empresa');
+export const updateCompany = withErrorHandler(updateCompanyHandler, 'modificar empresa');

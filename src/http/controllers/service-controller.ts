@@ -12,7 +12,7 @@ async function getServiceHandler(request: FastifyRequest, reply: FastifyReply) {
   
   if (services.length === 0) {
     return reply.status(404).send({
-      error: 'Serviço não encontrado'
+      error: 'Serviço não foi encontrado'
     });
   }
 
@@ -21,7 +21,7 @@ async function getServiceHandler(request: FastifyRequest, reply: FastifyReply) {
   });
 }
 
-export const getService = withErrorHandler(getServiceHandler, 'buscar serviço');
+export const getService = withErrorHandler(getServiceHandler, 'procurar serviço');
 
 // Controller para listar serviços
 async function listServicesHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -62,12 +62,12 @@ async function createServiceHandler(request: FastifyRequest, reply: FastifyReply
   }).returning();
 
   return reply.status(201).send({
-    message: 'Serviço criado com sucesso',
+    message: 'Serviço adicionado com sucesso',
     service: newService[0]
   });
 }
 
-export const createService = withErrorHandler(createServiceHandler, 'criar serviço');
+export const createService = withErrorHandler(createServiceHandler, 'adicionar serviço');
 
 // Controller para atualizar um serviço
 async function updateServiceHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -95,17 +95,17 @@ async function updateServiceHandler(request: FastifyRequest, reply: FastifyReply
 
   if (updatedService.length === 0) {
     return reply.status(404).send({
-      error: 'Serviço não encontrado'
+      error: 'Serviço não foi encontrado'
     });
   }
 
   return reply.send({
-    message: 'Serviço atualizado com sucesso',
+    message: 'Serviço modificado com sucesso',
     service: updatedService[0]
   });
 }
 
-export const updateService = withErrorHandler(updateServiceHandler, 'atualizar serviço');
+export const updateService = withErrorHandler(updateServiceHandler, 'modificar serviço');
 
 // Controller para eliminar um serviço
 async function deleteServiceHandler(request: FastifyRequest, reply: FastifyReply) {
@@ -118,13 +118,13 @@ async function deleteServiceHandler(request: FastifyRequest, reply: FastifyReply
 
   if (deletedService.length === 0) {
     return reply.status(404).send({
-      error: 'Serviço não encontrado'
+      error: 'Serviço não foi encontrado'
     });
   }
 
   return reply.send({
-    message: 'Serviço eliminado com sucesso'
+    message: 'Serviço removido com sucesso'
   });
 }
 
-export const deleteService = withErrorHandler(deleteServiceHandler, 'eliminar serviço');
+export const deleteService = withErrorHandler(deleteServiceHandler, 'remover serviço');
