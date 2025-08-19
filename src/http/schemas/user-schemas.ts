@@ -57,7 +57,10 @@ export const listUsersSchema = {
   querystring: {
     type: 'object',
     properties: {
-      company_id: { type: 'string', minLength: 36, maxLength: 36 }
+      company_id: { type: 'string', minLength: 36, maxLength: 36 },
+      page: { type: 'number', minimum: 1, default: 1 },
+      limit: { type: 'number', minimum: 1, maximum: 100, default: 10 },
+      search: { type: 'string', maxLength: 100 }
     },
     additionalProperties: false,
     required: ['company_id']
@@ -76,8 +79,19 @@ export const listUsersSchema = {
               last_name: { type: 'string' },
               email: { type: 'string' },
               photo: { type: 'string' },
-              type: { type: 'string' }
+              type: { type: 'string' },
+              is_active: { type: 'boolean' },
+              created_at: { type: 'string' }
             }
+          }
+        },
+        pagination: {
+          type: 'object',
+          properties: {
+            page: { type: 'number' },
+            limit: { type: 'number' },
+            total: { type: 'number' },
+            totalPages: { type: 'number' }
           }
         }
       }
@@ -110,6 +124,25 @@ export const getUserByIdSchema = {
             company_id: { type: 'string' }
           }
         }
+      }
+    }
+  }
+};
+
+export const deactivateUserSchema = {
+  params: {
+    type: 'object',
+    properties: {
+      id: { type: 'string', minLength: 36, maxLength: 36 }
+    },
+    additionalProperties: false,
+    required: ['id']
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        message: { type: 'string' }
       }
     }
   }
