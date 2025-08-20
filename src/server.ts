@@ -8,6 +8,7 @@ import { serviceRoutes } from "./http/routes/service-routes.ts"
 import { companyRoutes } from "./http/routes/company-routes.ts"
 import { locationRoutes } from "./http/routes/location-routes.ts"
 import { clientAdditionalInfoRoutes } from "./http/routes/client-additional-info-routes.ts"
+import { appointmentRoutes } from "./http/routes/appointment-routes.ts"
 
 const app = fastify();
 
@@ -28,6 +29,7 @@ app.register(serviceRoutes);
 app.register(companyRoutes);
 app.register(locationRoutes);
 app.register(clientAdditionalInfoRoutes);
+app.register(appointmentRoutes);
 
 app.get("/health", (req, res) => {
   res.send("OK");
