@@ -10,6 +10,7 @@ export const service = pgTable('service', {
   duration_minutes: integer('duration_minutes').notNull(),
   price: decimal('price', { precision: 10, scale: 2 }).notNull(),
   description: text('description'),
+  status: integer('status').notNull().default(1), // 0 = desativado, 1 = ativo
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow().$onUpdate(() => new Date()),
   is_active: boolean('is_active').notNull().default(true),
