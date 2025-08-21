@@ -14,6 +14,7 @@ export * from './client-additional-info-document.ts';
 
 // Service and appointment schemas
 export * from './service.ts';
+export * from './service-location.ts';
 export * from './appointment.ts';
 export * from './appointment-status.ts';
 

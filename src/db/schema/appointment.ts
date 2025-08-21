@@ -5,10 +5,12 @@ import { location } from './location.ts';
 import { client } from './client.ts';
 import { service } from './service.ts';
 import { appointmentStatus } from './appointment-status.ts';
+import { company } from './company.ts';
 
 export const appointment = pgTable('appointment', {
   id: uuid('id').primaryKey().defaultRandom(),
   user_id: uuid('user_id').notNull().references(() => user.id),
+  company_id: uuid('company_id').notNull().references(() => company.id),
   location_id: uuid('location_id').notNull().references(() => location.id),
   client_id: uuid('client_id').notNull().references(() => client.id),
   service_id: uuid('service_id').notNull().references(() => service.id),

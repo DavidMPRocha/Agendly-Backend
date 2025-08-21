@@ -22,6 +22,27 @@
       "when": 1755362241992,
       "tag": "0002_silky_shocker",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1755728638866,
+      "tag": "0003_keen_skullbuster",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1755772885191,
+      "tag": "0004_nice_klaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1755780989054,
+      "tag": "0005_goofy_adam_destine",
+      "breakpoints": true
     }
   ]
 }

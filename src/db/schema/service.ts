@@ -1,11 +1,11 @@
 import { pgTable, uuid, varchar, integer, decimal, text, timestamp, boolean } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
 import { company } from './company.ts';
-import { location } from './location.ts';
+import { serviceLocation } from './service-location.ts';
 
 export const service = pgTable('service', {
   id: uuid('id').primaryKey().defaultRandom(),
   company_id: uuid('company_id').notNull().references(() => company.id),
-  location_id: uuid('location_id').references(() => location.id),
   name: varchar('name', { length: 100 }).notNull(),
   duration_minutes: integer('duration_minutes').notNull(),
   price: decimal('price', { precision: 10, scale: 2 }).notNull(),
@@ -15,6 +15,11 @@ export const service = pgTable('service', {
   updated_at: timestamp('updated_at').notNull().defaultNow().$onUpdate(() => new Date()),
   is_active: boolean('is_active').notNull().default(true),
 });
+
+// Relações
+export const serviceRelations = relations(service, ({ many }) => ({
+  serviceLocations: many(serviceLocation),
+}));
 
 export type Service = typeof service.$inferSelect;
 export type NewService = typeof service.$inferInsert;

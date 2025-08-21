@@ -27,7 +27,7 @@ export const client = pgTable('client', {
   favorite_collaborator: uuid('favorite_collaborator').references(() => user.id),
   notification_phone: boolean('notification_phone').notNull().default(false),
   notification_email: boolean('notification_email').notNull().default(false),
-  status: integer('status').notNull().default(1), // 0 = desativado, 1 = ativo, 2 = eliminado
+  status: integer('status').notNull().default(1), // 0 = desativado, 1 = ativo
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow().$onUpdate(() => new Date()).$onUpdate(() => new Date()),
   is_active: boolean('is_active').notNull().default(true),

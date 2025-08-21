@@ -5,6 +5,7 @@ import { appointmentStatus } from "./appointment-status.ts";
 import { company } from "./company.ts";
 import { location } from "./location.ts";
 import { service } from "./service.ts";
+import { serviceLocation } from "./service-location.ts";
 import { userLocation } from "./user-location.ts";
 import { user } from "./user.ts";
 import { role } from "./role.ts";
@@ -14,7 +15,7 @@ import { clientAdditionalInfo } from "./client-additional-info.ts";
 import { clientAdditionalInfoDocument } from "./client-additional-info-document.ts";
 
 // Re-export all tables
-export { user, company, location, userLocation, client, service, appointment, appointmentStatus, permission, role, rolePermission, userLocationRole, clientAdditionalInfo, clientAdditionalInfoDocument };
+export { user, company, location, userLocation, client, service, serviceLocation, appointment, appointmentStatus, permission, role, rolePermission, userLocationRole, clientAdditionalInfo, clientAdditionalInfoDocument };
 
 // Schema object
 export const schema = {
@@ -24,6 +25,7 @@ export const schema = {
   userLocation,
   client,
   service,
+  serviceLocation,
   appointment,
   appointmentStatus,
   permission,
