@@ -17,11 +17,21 @@ export const getServiceSchema = {
           properties: {
             id: { type: 'string' },
             company_id: { type: 'string' },
-            location_id: { type: 'string' },
+            location_ids: { 
+              type: 'array', 
+              items: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  name: { type: 'string' },
+                } 
+              } 
+            },
             name: { type: 'string' },
             duration_minutes: { type: 'number' },
             price: { type: 'string' },
-            description: { type: 'string' }
+            description: { type: 'string' },
+            status: { type: 'number' }
           }
         }
       }
@@ -56,11 +66,21 @@ export const listServicesSchema = {
             properties: {
               id: { type: 'string' },
               company_id: { type: 'string' },
-              location_id: { type: 'string' },
+              location_ids: { 
+                type: 'array', 
+                items: {
+                  type: 'object',
+                  properties: {
+                    id: { type: 'string' },
+                    name: { type: 'string' },
+                  } 
+                } 
+              },
               name: { type: 'string' },
               duration_minutes: { type: 'number' },
               price: { type: 'string' },
-              description: { type: 'string' }
+              description: { type: 'string' },
+              status: { type: 'number' }
             }
           }
         }
@@ -77,7 +97,7 @@ export const createServiceSchema = {
       duration_minutes: { type: 'number', minimum: 1 },
       price: { type: 'number', minimum: 0 },
       description: { type: 'string' },
-      location_id: { type: 'string', minLength: 36, maxLength: 36 }
+      location_ids: { type: 'array', items: { type: 'string', minLength: 36, maxLength: 36 } }
     },
     required: ['name', 'duration_minutes', 'price'],
     additionalProperties: false
@@ -92,11 +112,21 @@ export const createServiceSchema = {
           properties: {
             id: { type: 'string' },
             company_id: { type: 'string' },
-            location_id: { type: 'string' },
+            location_ids: { 
+              type: 'array', 
+              items: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  name: { type: 'string' },
+                } 
+              } 
+            },
             name: { type: 'string' },
             duration_minutes: { type: 'number' },
             price: { type: 'string' },
-            description: { type: 'string' }
+            description: { type: 'string' },
+            status: { type: 'number' }
           }
         }
       }
@@ -120,7 +150,7 @@ export const updateServiceSchema = {
       duration_minutes: { type: 'number', minimum: 1 },
       price: { type: 'number', minimum: 0 },
       description: { type: 'string' },
-      location_id: { type: 'string', minLength: 36, maxLength: 36 }
+      location_ids: { type: 'array', items: { type: 'string', minLength: 36, maxLength: 36 } },
     },
     additionalProperties: false
   },
@@ -134,11 +164,21 @@ export const updateServiceSchema = {
           properties: {
             id: { type: 'string' },
             company_id: { type: 'string' },
-            location_id: { type: 'string' },
+            location_ids: { 
+              type: 'array', 
+              items: {
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  name: { type: 'string' },
+                } 
+              } 
+            },
             name: { type: 'string' },
             duration_minutes: { type: 'number' },
             price: { type: 'string' },
-            description: { type: 'string' }
+            description: { type: 'string' },
+            status: { type: 'number' }
           }
         }
       }
@@ -159,6 +199,14 @@ export const deleteServiceSchema = {
       id: { type: 'string', minLength: 36, maxLength: 36 }
     },
     required: ['id'],
+    additionalProperties: false
+  },
+  body: {
+    type: 'object',
+    properties: {
+      is_active: { type: 'boolean' },
+      status: { type: 'number' }
+    },
     additionalProperties: false
   },
   response: {

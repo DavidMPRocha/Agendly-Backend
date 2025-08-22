@@ -1,36 +1,4 @@
 // Schemas para validação
-export const updateUserSchema = {
-  body: {
-    type: 'object',
-    properties: {
-      first_name: { type: 'string', minLength: 1, maxLength: 50 },
-      last_name: { type: 'string', minLength: 1, maxLength: 50 },
-      photo: { type: 'string', maxLength: 255 }
-    },
-    additionalProperties: false
-  },
-  response: {
-    200: {
-      type: 'object',
-      properties: {
-        message: { type: 'string' },
-        user: {
-          type: 'object',
-          properties: {
-            id: { type: 'string' },
-            first_name: { type: 'string' },
-            last_name: { type: 'string' },
-            email: { type: 'string' },
-            photo: { type: 'string' },
-            type: { type: 'string' },
-            company_id: { type: 'string' }
-          }
-        }
-      }
-    }
-  }
-};
-
 export const getUserSchema = {
   response: {
     200: {
@@ -43,9 +11,21 @@ export const getUserSchema = {
             first_name: { type: 'string' },
             last_name: { type: 'string' },
             email: { type: 'string' },
+            phone: { type: 'string' },
             photo: { type: 'string' },
             type: { type: 'string' },
-            company_id: { type: 'string' }
+            company_id: { type: 'string' },
+            status: { type: 'number' },
+            location_ids: { 
+              type: 'array', 
+              items: { 
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  name: { type: 'string' }
+                }
+              }
+            }
           }
         }
       }
@@ -78,10 +58,22 @@ export const listUsersSchema = {
               first_name: { type: 'string' },
               last_name: { type: 'string' },
               email: { type: 'string' },
+              phone: { type: 'string' },
               photo: { type: 'string' },
               type: { type: 'string' },
+              status: { type: 'number' },
               is_active: { type: 'boolean' },
-              created_at: { type: 'string' }
+              created_at: { type: 'string' },
+              location_ids: { 
+                type: 'array', 
+                items: { 
+                  type: 'object',
+                  properties: {
+                    id: { type: 'string' },
+                    name: { type: 'string' }
+                  }
+                }
+              }
             }
           }
         },
@@ -119,9 +111,21 @@ export const getUserByIdSchema = {
             first_name: { type: 'string' },
             last_name: { type: 'string' },
             email: { type: 'string' },
+            phone: { type: 'string' },
             photo: { type: 'string' },
             type: { type: 'string' },
-            company_id: { type: 'string' }
+            company_id: { type: 'string' },
+            status: { type: 'number' },
+            location_ids: { 
+              type: 'array', 
+              items: { 
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  name: { type: 'string' }
+                }
+              }
+            }
           }
         }
       }
@@ -129,7 +133,105 @@ export const getUserByIdSchema = {
   }
 };
 
-export const deactivateUserSchema = {
+export const createUserSchema = {
+  body: {
+    type: 'object',
+    properties: {
+      first_name: { type: 'string', minLength: 1, maxLength: 50 },
+      last_name: { type: 'string', minLength: 1, maxLength: 50 },
+      email: { type: 'string', format: 'email' },
+      phone: { type: 'string', maxLength: 20 },
+      photo: { type: 'string', maxLength: 255 },
+      type: { type: 'string', enum: ['owner', 'admin', 'user'] },
+      company_id: { type: 'string', minLength: 36, maxLength: 36 },
+      location_ids: { type: 'array', items: { type: 'string' } },
+    },
+    additionalProperties: false
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        message: { type: 'string' },
+        user: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            first_name: { type: 'string' },
+            last_name: { type: 'string' },
+            email: { type: 'string' },
+            phone: { type: 'string' },
+            photo: { type: 'string' },
+            type: { type: 'string' },
+            company_id: { type: 'string' },
+            status: { type: 'number' },
+            location_ids: { 
+              type: 'array', 
+              items: { 
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  name: { type: 'string' }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
+export const updateUserSchema = {
+  body: {
+    type: 'object',
+    properties: {
+      first_name: { type: 'string', minLength: 1, maxLength: 50 },
+      last_name: { type: 'string', minLength: 1, maxLength: 50 },
+      email: { type: 'string', format: 'email' },
+      phone: { type: 'string', maxLength: 20 },
+      photo: { type: 'string', maxLength: 255 },
+      type: { type: 'string', enum: ['owner', 'admin', 'user'] },
+      location_ids: { type: 'array', items: { type: 'string' } },
+      status: { type: 'number', enum: [0, 1] },
+    },
+    additionalProperties: false
+  },
+  response: {
+    200: {
+      type: 'object',
+      properties: {
+        message: { type: 'string' },
+        user: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            first_name: { type: 'string' },
+            last_name: { type: 'string' },
+            email: { type: 'string' },
+            phone: { type: 'string' },
+            photo: { type: 'string' },
+            type: { type: 'string' },
+            company_id: { type: 'string' },
+            status: { type: 'number' },
+            location_ids: { 
+              type: 'array', 
+              items: { 
+                type: 'object',
+                properties: {
+                  id: { type: 'string' },
+                  name: { type: 'string' }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+};
+
+export const deleteUserSchema = {
   params: {
     type: 'object',
     properties: {
@@ -137,6 +239,14 @@ export const deactivateUserSchema = {
     },
     additionalProperties: false,
     required: ['id']
+  },
+  body: {
+    type: 'object',
+    properties: {
+      is_active: { type: 'boolean' },
+      status: { type: 'integer', minimum: 0, maximum: 1 }
+    },
+    additionalProperties: false,
   },
   response: {
     200: {

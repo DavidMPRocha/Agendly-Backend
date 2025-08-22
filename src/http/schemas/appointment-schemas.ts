@@ -47,12 +47,13 @@ export const listAppointmentsSchema = {
   querystring: {
     type: 'object',
     properties: {
+      company_id: { type: 'string', minLength: 36, maxLength: 36 },
       location_id: { type: 'string', minLength: 36, maxLength: 36 },
       client_id: { type: 'string', minLength: 36, maxLength: 36 },
       service_id: { type: 'string', minLength: 36, maxLength: 36 },
       status_id: { type: 'string', minLength: 36, maxLength: 36 },
-      date_from: { type: 'string', format: 'date' },
-      date_to: { type: 'string', format: 'date' },
+      date_start: { type: 'string', format: 'date' },
+      date_end: { type: 'string', format: 'date' },
       user_id: { type: 'string', minLength: 36, maxLength: 36 }
     },
     additionalProperties: false
@@ -68,10 +69,15 @@ export const listAppointmentsSchema = {
             properties: {
               id: { type: 'string' },
               user_id: { type: 'string' },
+              user_name: { type: 'string' },
               location_id: { type: 'string' },
+              location_name: { type: 'string' },
               client_id: { type: 'string' },
+              client_name: { type: 'string' },
               service_id: { type: 'string' },
+              service_name: { type: 'string' },
               status_id: { type: 'string' },
+              status_name: { type: 'string' },
               date: { type: 'string', format: 'date' },
               datetime_start: { type: 'string', format: 'date-time' },
               datetime_end: { type: 'string', format: 'date-time' },
@@ -93,7 +99,9 @@ export const createAppointmentSchema = {
   body: {
     type: 'object',
     properties: {
+      company_id: { type: 'string', minLength: 36, maxLength: 36 },
       location_id: { type: 'string', minLength: 36, maxLength: 36 },
+      user_id: { type: 'string', minLength: 36, maxLength: 36 },
       client_id: { type: 'string', minLength: 36, maxLength: 36 },
       service_id: { type: 'string', minLength: 36, maxLength: 36 },
       status_id: { type: 'string', minLength: 36, maxLength: 36 },
@@ -104,7 +112,7 @@ export const createAppointmentSchema = {
       notified_by_phone: { type: 'boolean' },
       notified_by_email: { type: 'boolean' }
     },
-    required: ['location_id', 'client_id', 'service_id', 'date', 'datetime_start', 'datetime_end'],
+    required: ['company_id', 'location_id', 'user_id', 'client_id', 'service_id', 'date', 'datetime_start', 'datetime_end'],
     additionalProperties: false
   },
   response: {
@@ -116,8 +124,9 @@ export const createAppointmentSchema = {
           type: 'object',
           properties: {
             id: { type: 'string' },
-            user_id: { type: 'string' },
+            company_id: { type: 'string' },
             location_id: { type: 'string' },
+            user_id: { type: 'string' },
             client_id: { type: 'string' },
             service_id: { type: 'string' },
             status_id: { type: 'string' },
@@ -149,7 +158,9 @@ export const updateAppointmentSchema = {
   body: {
     type: 'object',
     properties: {
+      company_id: { type: 'string', minLength: 36, maxLength: 36 },
       location_id: { type: 'string', minLength: 36, maxLength: 36 },
+      user_id: { type: 'string', minLength: 36, maxLength: 36 },
       client_id: { type: 'string', minLength: 36, maxLength: 36 },
       service_id: { type: 'string', minLength: 36, maxLength: 36 },
       status_id: { type: 'string', minLength: 36, maxLength: 36 },
@@ -171,8 +182,9 @@ export const updateAppointmentSchema = {
           type: 'object',
           properties: {
             id: { type: 'string' },
-            user_id: { type: 'string' },
+            company_id: { type: 'string' },
             location_id: { type: 'string' },
+            user_id: { type: 'string' },
             client_id: { type: 'string' },
             service_id: { type: 'string' },
             status_id: { type: 'string' },

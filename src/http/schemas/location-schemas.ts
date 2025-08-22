@@ -20,7 +20,9 @@ export const getLocationSchema = {
             name: { type: 'string' },
             address: { type: 'string' },
             city: { type: 'string' },
-            postal_code: { type: 'string' }
+            country: { type: 'string' },
+            state: { type: 'string' },
+            zip: { type: 'string' }
           }
         }
       }
@@ -57,7 +59,9 @@ export const listLocationsSchema = {
               name: { type: 'string' },
               address: { type: 'string' },
               city: { type: 'string' },
-              postal_code: { type: 'string' }
+              country: { type: 'string' },
+              state: { type: 'string' },
+              zip: { type: 'string' }
             }
           }
         }
@@ -71,9 +75,11 @@ export const createLocationSchema = {
     type: 'object',
     properties: {
       name: { type: 'string', minLength: 1, maxLength: 100 },
-      address: { type: 'string', maxLength: 255 },
+      country: { type: 'string', maxLength: 50 },
+      state: { type: 'string', maxLength: 50 },
       city: { type: 'string', maxLength: 50 },
-      postal_code: { type: 'string', maxLength: 10 },
+      address: { type: 'string', maxLength: 255 },
+      zip: { type: 'string', maxLength: 20 },
       company_id: { type: 'string', minLength: 36, maxLength: 36 }
     },
     required: ['name', 'company_id'],
@@ -92,7 +98,9 @@ export const createLocationSchema = {
             name: { type: 'string' },
             address: { type: 'string' },
             city: { type: 'string' },
-            postal_code: { type: 'string' }
+            country: { type: 'string' },
+            state: { type: 'string' },
+            zip: { type: 'string' }
           }
         }
       }
@@ -115,7 +123,9 @@ export const updateLocationSchema = {
       name: { type: 'string', minLength: 1, maxLength: 100 },
       address: { type: 'string', maxLength: 255 },
       city: { type: 'string', maxLength: 50 },
-      postal_code: { type: 'string', maxLength: 10 }
+      country: { type: 'string', maxLength: 50 },
+      state: { type: 'string', maxLength: 50 },
+      zip: { type: 'string', maxLength: 20 }
     },
     additionalProperties: false
   },
@@ -132,7 +142,9 @@ export const updateLocationSchema = {
             name: { type: 'string' },
             address: { type: 'string' },
             city: { type: 'string' },
-            postal_code: { type: 'string' }
+            country: { type: 'string' },
+            state: { type: 'string' },
+            zip: { type: 'string' }
           }
         }
       }

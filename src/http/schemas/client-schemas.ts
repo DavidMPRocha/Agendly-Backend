@@ -16,6 +16,7 @@ export type ClientSchema = {
   address?: string;
   zip?: string;
   invoce_notes?: string;
+  status?: number;
   favorite_collaborator?: string;
   notification_phone?: boolean;
   notification_email?: boolean;
@@ -231,7 +232,7 @@ export const updateClientSchema = {
       favorite_collaborator: { type: 'string', minLength: 36, maxLength: 36 },
       notification_phone: { type: 'boolean' },
       notification_email: { type: 'boolean' },
-      location_id: { type: 'string', minLength: 36, maxLength: 36 }
+      location_id: { type: 'string', minLength: 36, maxLength: 36 },
     },
     additionalProperties: false
   },
@@ -287,6 +288,14 @@ export const deleteClientSchema = {
       id: { type: 'string', minLength: 36, maxLength: 36 }
     },
     required: ['id'],
+    additionalProperties: false
+  },
+  body: {
+    type: 'object',
+    properties: {
+      is_active: { type: 'boolean' },
+      status: { type: 'number' }
+    },
     additionalProperties: false
   },
   response: {
