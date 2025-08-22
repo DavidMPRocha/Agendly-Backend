@@ -23,7 +23,9 @@ async function loginHandler(request: FastifyRequest, reply: FastifyReply) {
 
   const userData = users[0];
 
-  if (password !== userData.password) {
+  // Compare password using bcryptjs
+  const isPasswordValid = await bcrypt.compare(password, userData.password);
+  if (!isPasswordValid) {
     return reply.status(401).send({
       error: 'Email ou palavra-passe inválidos'
     });
@@ -92,12 +94,16 @@ async function registerHandler(request: FastifyRequest, reply: FastifyReply) {
   }).returning();
   const location_id = newLocation[0].id;
   
+  // Hash the password using bcryptjs
+  const saltRounds = 10;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  
   // *** Criar user ***
   const newUser = await db.insert(schema.user).values({
     first_name,
     last_name,
     email,
-    password,
+    password: hashedPassword,
     photo: "example.png",
     company_id,
     type: "owner",

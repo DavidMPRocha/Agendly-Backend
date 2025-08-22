@@ -33,6 +33,7 @@ async function listClientsHandler(request: FastifyRequest, reply: FastifyReply) 
   if (location_id) {
     whereConditions.push(eq(schema.client.location_id, location_id));
   }
+  whereConditions.push(eq(schema.client.is_active, true));
 
   const clients = await db.select().from(schema.client).where(and(...whereConditions));
 
@@ -126,7 +127,8 @@ async function updateClientHandler(request: FastifyRequest, reply: FastifyReply)
     favorite_collaborator,
     notification_phone, 
     notification_email, 
-    location_id 
+    location_id,
+    status
   } = request.body as ClientSchema;
 
   const updateData: any = {};
@@ -151,7 +153,8 @@ async function updateClientHandler(request: FastifyRequest, reply: FastifyReply)
   if (notification_phone !== undefined) updateData.notification_phone = notification_phone;
   if (notification_email !== undefined) updateData.notification_email = notification_email;
   if (location_id) updateData.location_id = location_id;
-
+  if (status !== undefined) updateData.status = status;
+  
   const updatedClient = await db
     .update(schema.client)
     .set(updateData)
@@ -175,9 +178,22 @@ export const updateClient = withErrorHandler(updateClientHandler, 'modificar cli
 // Controller para eliminar um cliente
 async function deleteClientHandler(request: FastifyRequest, reply: FastifyReply) {
   const { id } = request.params as { id: string };
+  const { is_active, status } = request.body as { is_active?: boolean; status?: number };
+
+  console.log(is_active, status);
+  const updateData: any = {};
+  if (is_active !== undefined) updateData.is_active = is_active;
+  if (status !== undefined) updateData.status = status;
+
+  if (Object.keys(updateData).length === 0) {
+    return reply.status(400).send({
+      error: 'Nenhum dado fornecido para atualização'
+    });
+  }
 
   const deletedClient = await db
-    .delete(schema.client)
+    .update(schema.client)
+    .set(updateData)
     .where(eq(schema.client.id, id))
     .returning();
 
@@ -188,7 +204,7 @@ async function deleteClientHandler(request: FastifyRequest, reply: FastifyReply)
   }
 
   return reply.send({
-    message: 'Cliente removido com sucesso'
+    message: `Cliente ${is_active !== undefined ? 'eliminado' : ''}${status !== undefined ? (status === 0 ? 'desativado' : 'ativado') : ''} com sucesso`
   });
 }
 

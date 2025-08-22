@@ -1,7 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 import { authenticateToken, requireOwnerOrAdmin } from '../middleware/auth-middleware.ts';
-import { getCurrentUser, updateCurrentUser, listUsers } from '../controllers/user-controller.ts';
-import { getUserByIdSchema, getUserSchema, listUsersSchema, updateUserSchema } from '../schemas/user-schemas.ts';
+import { getCurrentUser, updateCurrentUser, listUsers, updateUser, getUserById, createUser, deleteUser } from '../controllers/user-controller.ts';
+import { createUserSchema, getUserByIdSchema, getUserSchema, listUsersSchema, updateUserSchema, deleteUserSchema } from '../schemas/user-schemas.ts';
 
 export const userRoutes: FastifyPluginCallback = (app) => {
   // Rota para obter dados do user logado
@@ -22,7 +22,7 @@ export const userRoutes: FastifyPluginCallback = (app) => {
   app.get('/users/:id', {
     schema: getUserByIdSchema,
     preHandler: authenticateToken,
-    handler: getCurrentUser
+    handler: getUserById
   });
 
   // Rota para listar todos os users (apenas para owners/admins)
@@ -31,5 +31,25 @@ export const userRoutes: FastifyPluginCallback = (app) => {
     preHandler: authenticateToken,
     handler: listUsers
   });
+  
+  // Rota para criar um novo user
+  app.post('/users', {
+    schema: createUserSchema,
+    preHandler: authenticateToken,
+    handler: createUser
+  });
 
+  // Rota para atualizar dados de um user específico
+  app.put('/users/:id', {
+    schema: updateUserSchema,
+    preHandler: authenticateToken,
+    handler: updateUser
+  });   
+
+  // Rota para desativar/ativar um user
+  app.delete('/users/:id', {
+    schema: deleteUserSchema,
+    preHandler: authenticateToken,
+    handler: deleteUser
+  });
 };

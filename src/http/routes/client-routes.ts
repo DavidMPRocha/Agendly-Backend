@@ -39,6 +39,7 @@ export const clientRoutes: FastifyPluginCallback = (app) => {
     handler: deleteClient
   });
 
+  // Rota para obter o dashboard de clientes
   app.get('/clients/dashboard', {
     schema: dasboardClientSchema,
     preHandler: authenticateToken,

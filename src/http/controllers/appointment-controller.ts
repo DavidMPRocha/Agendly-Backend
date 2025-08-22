@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { eq, and, gte, lte } from 'drizzle-orm';
+import { eq, and, gte, lte, sql } from 'drizzle-orm';
 import { db } from '../../db/connection.ts';
 import { schema } from '../../db/schema/schema.ts';
 import { withErrorHandler } from '../middleware/error-handler.ts';
@@ -26,28 +26,30 @@ export const getAppointment = withErrorHandler(getAppointmentHandler, 'obter age
 // Controller para listar agendamentos
 async function listAppointmentsHandler(request: FastifyRequest, reply: FastifyReply) {
   const { 
+    company_id,
     location_id, 
     client_id, 
     service_id, 
     status_id, 
-    date_from, 
-    date_to, 
+    date_start, 
+    date_end, 
     user_id 
   } = request.query as {
+    company_id?: string;
     location_id?: string;
     client_id?: string;
     service_id?: string;
     status_id?: string;
-    date_from?: string;
-    date_to?: string;
+    date_start?: string;
+    date_end?: string;
     user_id?: string;
   };
 
   let conditions = [eq(schema.appointment.is_active, true)];
 
-  // Se não especificar user_id, usar o user logado
-  const targetUserId = user_id || request.user.user_id;
-  conditions.push(eq(schema.appointment.user_id, targetUserId));
+  if (company_id) {
+    conditions.push(eq(schema.appointment.company_id, company_id));
+  }
 
   if (location_id) {
     conditions.push(eq(schema.appointment.location_id, location_id));
@@ -55,6 +57,10 @@ async function listAppointmentsHandler(request: FastifyRequest, reply: FastifyRe
 
   if (client_id) {
     conditions.push(eq(schema.appointment.client_id, client_id));
+  }
+
+  if (user_id) {
+    conditions.push(eq(schema.appointment.user_id, user_id));
   }
 
   if (service_id) {
@@ -65,17 +71,49 @@ async function listAppointmentsHandler(request: FastifyRequest, reply: FastifyRe
     conditions.push(eq(schema.appointment.status_id, status_id));
   }
 
-  if (date_from) {
-    conditions.push(gte(schema.appointment.date, date_from));
+  if (date_start) {
+    conditions.push(gte(schema.appointment.date, date_start));
   }
 
-  if (date_to) {
-    conditions.push(lte(schema.appointment.date, date_to));
+  if (date_end) {
+    conditions.push(lte(schema.appointment.date, date_end));
   }
 
   const appointments = await db
-    .select()
+    .select({
+      id: schema.appointment.id,
+      user_id: schema.appointment.user_id,
+      company_id: schema.appointment.company_id,
+      location_id: schema.appointment.location_id,
+      client_id: schema.appointment.client_id,
+      service_id: schema.appointment.service_id,
+      status_id: schema.appointment.status_id,
+      date: schema.appointment.date,
+      datetime_start: schema.appointment.datetime_start,
+      datetime_end: schema.appointment.datetime_end,
+      description: schema.appointment.description,
+      notified_by_phone: schema.appointment.notified_by_phone,
+      notified_by_email: schema.appointment.notified_by_email,
+      created_at: schema.appointment.created_at,
+      updated_at: schema.appointment.updated_at,
+      is_active: schema.appointment.is_active,
+      // User data
+      user_name: sql<string>`CONCAT(${schema.user.first_name}, ' ', ${schema.user.last_name})`,
+      // Client data
+      client_name: schema.client.name,
+      // Service data
+      service_name: schema.service.name,
+      // Status data
+      status_name: schema.appointmentStatus.name,
+      // Location data
+      location_name: schema.location.name,
+    })
     .from(schema.appointment)
+    .leftJoin(schema.user, eq(schema.appointment.user_id, schema.user.id))
+    .leftJoin(schema.client, eq(schema.appointment.client_id, schema.client.id))
+    .leftJoin(schema.service, eq(schema.appointment.service_id, schema.service.id))
+    .leftJoin(schema.appointmentStatus, eq(schema.appointment.status_id, schema.appointmentStatus.id))
+    .leftJoin(schema.location, eq(schema.appointment.location_id, schema.location.id))
     .where(and(...conditions))
     .orderBy(schema.appointment.datetime_start);
 
@@ -89,8 +127,10 @@ export const listAppointments = withErrorHandler(listAppointmentsHandler, 'lista
 // Controller para criar um novo agendamento
 async function createAppointmentHandler(request: FastifyRequest, reply: FastifyReply) {
   const {
+    company_id,
     location_id,
     client_id,
+    user_id,
     service_id,
     status_id,
     date,
@@ -100,8 +140,10 @@ async function createAppointmentHandler(request: FastifyRequest, reply: FastifyR
     notified_by_phone = false,
     notified_by_email = false
   } = request.body as {
+    company_id: string;
     location_id: string;
     client_id: string;
+    user_id: string;
     service_id: string;
     status_id?: string;
     date: string;
@@ -113,9 +155,10 @@ async function createAppointmentHandler(request: FastifyRequest, reply: FastifyR
   };
 
   const appointmentData = {
-    user_id: request.user.user_id,
+    company_id,
     location_id,
     client_id,
+    user_id,
     service_id,
     status_id,
     date,

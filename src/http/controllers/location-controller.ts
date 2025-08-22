@@ -38,20 +38,24 @@ export const listLocations = withErrorHandler(listLocationsHandler, 'listar loca
 
 // Controller para criar uma nova localização
 async function createLocationHandler(request: FastifyRequest, reply: FastifyReply) {
-  const { name, address, city, postal_code, company_id } = request.body as {
+  const { name, country, state, city, address, zip, company_id } = request.body as {
     name: string;
-    address?: string;
+    country?: string;
+    state?: string;
     city?: string;
-    postal_code?: string;
+    address?: string;
+    zip?: string;
     company_id: string;
   };
 
   const newLocation = await db.insert(schema.location).values({
     company_id,
     name,
-    address,
+    country,
+    state,
     city,
-    postal_code,
+    address,
+    zip,
   }).returning();
 
   return reply.status(201).send({
@@ -65,18 +69,22 @@ export const createLocation = withErrorHandler(createLocationHandler, 'adicionar
 // Controller para atualizar uma localização
 async function updateLocationHandler(request: FastifyRequest, reply: FastifyReply) {
   const { id } = request.params as { id: string };
-  const { name, address, city, postal_code } = request.body as {
+  const { name, address, city, country, state, zip } = request.body as {
     name?: string;
     address?: string;
     city?: string;
-    postal_code?: string;
+    country?: string;
+    state?: string;
+    zip?: string;
   };
 
   const updateData: any = {};
   if (name) updateData.name = name;
   if (address !== undefined) updateData.address = address;
   if (city !== undefined) updateData.city = city;
-  if (postal_code !== undefined) updateData.postal_code = postal_code;
+  if (country !== undefined) updateData.country = country;
+  if (state !== undefined) updateData.state = state;
+  if (zip !== undefined) updateData.zip = zip;
 
   const updatedLocation = await db
     .update(schema.location)
