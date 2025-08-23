@@ -244,10 +244,15 @@ export const updateAppointment = withErrorHandler(updateAppointmentHandler, 'atu
 // Controller para eliminar um agendamento (soft delete)
 async function deleteAppointmentHandler(request: FastifyRequest, reply: FastifyReply) {
   const { id } = request.params as { id: string };
+  const { is_active, status_id } = request.body as { is_active?: boolean; status_id?: string };
+
+  const updateData: any = {};
+  if (is_active !== undefined) updateData.is_active = is_active;
+  if (status_id !== undefined) updateData.status_id = status_id;
 
   const deletedAppointment = await db
     .update(schema.appointment)
-    .set({ is_active: false })
+    .set(updateData)
     .where(eq(schema.appointment.id, id))
     .returning();
 
@@ -258,7 +263,7 @@ async function deleteAppointmentHandler(request: FastifyRequest, reply: FastifyR
   }
 
   return reply.send({
-    message: 'Agendamento eliminado com sucesso'
+    message: `Agendamento ${is_active !== undefined ? 'eliminado' : 'atualizado'}${status_id !== undefined ? `alterado de estado` : ''} com sucesso`
   });
 }
 
