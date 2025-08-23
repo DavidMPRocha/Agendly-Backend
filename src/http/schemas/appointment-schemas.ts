@@ -219,6 +219,14 @@ export const deleteAppointmentSchema = {
     required: ['id'],
     additionalProperties: false
   },
+  body: {
+    type: 'object',
+    properties: {
+      is_active: { type: 'boolean' },
+      status_id: { type: 'string', minLength: 36, maxLength: 36 }
+    },
+    additionalProperties: false
+  },
   response: {
     200: {
       type: 'object',
