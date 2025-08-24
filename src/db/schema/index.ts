@@ -22,3 +22,8 @@ export * from './appointment-status.ts';
 export * from './role.ts';
 export * from './permission.ts';
 export * from './role-permission.ts';
+
+// Plan and subscription schemas
+export * from './plan-type.ts';
+export * from './plan-status.ts';
+export * from './plan.ts';
