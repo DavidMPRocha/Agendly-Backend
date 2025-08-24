@@ -9,6 +9,8 @@ import { seedUserLocationRole } from './user-location-role.ts';
 import { seedServices } from './services.ts';
 import { seedAppointmentStatus } from './appointment-status.ts';
 import { seedClient } from './client.ts';
+import { seedPlanStatus } from './plan-status.ts';
+import { seedPlanType } from './plan-type.ts';
 
 export async function runSeeds() {
   try {
@@ -44,6 +46,10 @@ export async function runSeeds() {
     
     // Seed client
     await seedClient(companyId, locationId);
+    
+    // Seed plan statuses and types
+    await seedPlanStatus();
+    await seedPlanType();
     
     console.log('\n🎉 All seeds completed successfully!');
   } catch (error) {
