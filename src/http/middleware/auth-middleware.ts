@@ -1,7 +1,6 @@
 import type { FastifyRequest, FastifyReply } from 'fastify';
 import jwt from 'jsonwebtoken';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+import { env } from '../../env.ts';
 
 // Interface para o payload do JWT
 interface JWTPayload {
@@ -33,7 +32,7 @@ export async function authenticateToken(request: FastifyRequest, reply: FastifyR
     }
 
     // Verificar e decodificar o token
-    const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
+    const decoded = jwt.verify(token, env.JWT_SECRET) as JWTPayload;
     
     // Adicionar informações do user à requisição
     request.user = decoded;
