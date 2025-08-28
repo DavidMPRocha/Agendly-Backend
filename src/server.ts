@@ -10,6 +10,7 @@ import { locationRoutes } from "./http/routes/location-routes.ts"
 import { clientAdditionalInfoRoutes } from "./http/routes/client-additional-info-routes.ts"
 import { appointmentRoutes } from "./http/routes/appointment-routes.ts"
 import { planRoutes } from "./http/routes/plan-routes.ts"
+import { healthRoutes } from "./http/routes/health-routes.ts"
 
 const app = fastify();
 
@@ -33,9 +34,8 @@ app.register(clientAdditionalInfoRoutes);
 app.register(appointmentRoutes);
 app.register(planRoutes);
 
-app.get("/health", (req, res) => {
-  res.send("OK");
-});
+// Health check routes (open routes - não precisam de autenticação)
+app.register(healthRoutes);
 
 app.listen({ port: env.PORT, host: "0.0.0.0" }, (err, address) => {
   if (err) {
