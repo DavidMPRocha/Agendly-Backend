@@ -32,5 +32,7 @@ export const env = {
   JWT_SECRET,
   NODE_ENV,
   IS_PRODUCTION: NODE_ENV === 'production',
-  IS_DEVELOPMENT: NODE_ENV === 'development'
+  IS_DEVELOPMENT: NODE_ENV === 'development',
+  CORS_ORIGIN: process.env.CORS_ORIGIN,
+  LOG_LEVEL: process.env.LOG_LEVEL || 'info'
 };
