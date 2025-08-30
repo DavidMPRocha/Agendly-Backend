@@ -1,5 +1,6 @@
 import { fastify } from "fastify"
 import { fastifyCors } from "@fastify/cors"
+import { fastifyRateLimit } from "@fastify/rate-limit"
 import { env } from "./env.ts"
 import { authRoutes } from "./http/routes/auth-routes.ts"
 import { userRoutes } from "./http/routes/user-routes.ts"
@@ -13,6 +14,32 @@ import { planRoutes } from "./http/routes/plan-routes.ts"
 import { healthRoutes } from "./http/routes/health-routes.ts"
 
 const app = fastify();
+
+
+// Configuração de rate limiting
+app.register(fastifyRateLimit, {
+  max: 100, // Máximo de 100 requisições
+  timeWindow: '1 minute', // Por minuto
+  errorResponseBuilder: (request, context) => ({
+    code: 429,
+    error: 'Too Many Requests',
+    message: `Rate limit exceeded, retry in ${context.after}`,
+    date: new Date().toISOString(),
+    expiresIn: context.after
+  })
+});
+
+// Rate limiting específico para autenticação (mais restritivo)
+app.register(fastifyRateLimit, {
+  keyGenerator: (request) => request.ip,
+  max: 5, // Máximo de 5 tentativas de login
+  timeWindow: '15 minutes', // Por 15 minutos
+  skipOnError: false,
+  allowList: (request) => {
+    // Permitir health checks
+    return request.url === '/health' || request.url === '/health/detailed';
+  }
+});
 
 // Configuração de CORS baseada no ambiente
 const corsOrigins = env.IS_PRODUCTION 

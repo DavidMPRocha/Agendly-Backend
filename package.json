@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx --env-file=.env --experimental-strip-types --watch --no-warnings src/server.ts",
-    "start": "tsx --no-warnings src/server.ts",
+    "start": "tsx --env-file=.env --no-warnings src/server.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
@@ -25,15 +25,24 @@
   },
   "homepage": "https://github.com/DavidMPRocha/Agendly-Backend#readme",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.2.1",
+    "@types/supertest": "^6.0.2",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "@vitest/ui": "^2.0.0",
     "drizzle-kit": "^0.31.4",
+    "eslint": "^8.57.0",
+    "supertest": "^7.0.0",
     "tsx": "^4.20.4",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^2.0.0"
   },
   "dependencies": {
     "@fastify/cors": "^11.1.0",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/jsonwebtoken": "^9.0.10",
+    "@fastify/rate-limit": "^10.3.0",
     "bcryptjs": "^3.0.2",
     "drizzle-orm": "^0.44.4",
     "fastify": "^5.5.0",
