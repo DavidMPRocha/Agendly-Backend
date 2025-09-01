@@ -15,6 +15,14 @@ import { healthRoutes } from "./http/routes/health-routes.ts"
 
 const app = fastify();
 
+// Middleware para tratamento de erros não capturados
+app.setErrorHandler((error: any, request: any, reply: any) => {
+  reply.status(500).send({
+    error: 'Internal Server Error',
+    message: env.IS_PRODUCTION ? 'Something went wrong' : error.message,
+    timestamp: new Date().toISOString()
+  });
+});
 
 // Configuração de rate limiting
 app.register(fastifyRateLimit, {
@@ -71,8 +79,13 @@ app.register(healthRoutes);
 
 app.listen({ port: env.PORT, host: "0.0.0.0" }, (err, address) => {
   if (err) {
-    console.error(err);
+    console.error('Failed to start server', 'SERVER', err);
     process.exit(1);
   }
-  console.log(`Server is running on port ${address.split(":")[2]}`);
+  
+  const port = address.split(":")[2];
+  
+  console.log(`🚀 Server is running on port ${port}`);
+  console.log(`📊 Environment: ${env.NODE_ENV}`);
+  console.log(`🔒 CORS Origins: ${corsOrigins.join(', ')}`);
 });
